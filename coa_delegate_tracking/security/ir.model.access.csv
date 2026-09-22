@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_delegate_location_log_user,delegate.location.log.user,model_delegate_location_log,base.group_user,1,1,1,0
+access_delegate_location_log_admin,delegate.location.log.admin,model_delegate_location_log,base.group_system,1,1,1,1
+access_delegate_route_plan_user,delegate.route.plan.user,model_delegate_route_plan,base.group_user,1,1,1,0
+access_delegate_route_plan_admin,delegate.route.plan.admin,model_delegate_route_plan,base.group_system,1,1,1,1
+access_delegate_visit_user,delegate.visit.user,model_delegate_visit,base.group_user,1,1,1,0
+access_delegate_visit_admin,delegate.visit.admin,model_delegate_visit,base.group_system,1,1,1,1
+access_coa_delegate_user,coa.delegate.user,model_coa_delegate,base.group_user,1,1,1,0
+access_coa_delegate_admin,coa.delegate.admin,model_coa_delegate,base.group_system,1,1,1,1

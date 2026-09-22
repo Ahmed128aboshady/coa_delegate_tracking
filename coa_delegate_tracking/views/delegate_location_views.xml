@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Raw Logs - Tree/List View -->
+    <record id="view_delegate_location_log_tree" model="ir.ui.view">
+        <field name="name">delegate.location.log.tree</field>
+        <field name="model">delegate.location.log</field>
+        <field name="arch" type="xml">
+            <list string="GPS Location Logs" create="false" edit="false">
+                <field name="timestamp"/>
+                <field name="delegate_id"/>
+                <field name="latitude"/>
+                <field name="longitude"/>
+                <field name="speed"/>
+                <field name="battery_level"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Raw Logs - Form View -->
+    <record id="view_delegate_location_log_form" model="ir.ui.view">
+        <field name="name">delegate.location.log.form</field>
+        <field name="model">delegate.location.log</field>
+        <field name="arch" type="xml">
+            <form string="GPS Location Log" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="delegate_id"/>
+                            <field name="timestamp"/>
+                            <field name="battery_level"/>
+                        </group>
+                        <group>
+                            <field name="latitude"/>
+                            <field name="longitude"/>
+                            <field name="speed"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for Location Logs List -->
+    <record id="action_delegate_location_log" model="ir.actions.act_window">
+        <field name="name">سجلات المواقع GPS</field>
+        <field name="res_model">delegate.location.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                لا توجد سجلات مواقع حتى الآن.
+            </p>
+            <p>
+                ستظهر هنا سجلات إحداثيات GPS المرسلة تلقائياً من تطبيق المندوب.
+            </p>
+        </field>
+    </record>
+
+    <!-- Action for URL Map View -->
+    <record id="action_delegate_live_map" model="ir.actions.act_url">
+        <field name="name">خريطة تتبع المناديب (مباشر)</field>
+        <field name="url">/delegates/map</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Graph View for Delegate Sales Orders (sale.order) -->
+    <record id="view_sale_order_graph_delegate" model="ir.ui.view">
+        <field name="name">sale.order.graph.delegate</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <graph string="مبيعات المناديب" type="bar">
+                <field name="delegate_id" string="المندوب"/>
+                <field name="amount_total" type="measure" string="إجمالي المبيعات"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Pivot View for Delegate Sales Orders (sale.order) -->
+    <record id="view_sale_order_pivot_delegate" model="ir.ui.view">
+        <field name="name">sale.order.pivot.delegate</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <pivot string="تحليل مبيعات المناديب">
+                <field name="delegate_id" type="row" string="المندوب"/>
+                <field name="amount_total" type="measure" string="إجمالي المبيعات"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Action for Delegate Sales Dashboard -->
+    <record id="action_delegate_sales_dashboard" model="ir.actions.act_window">
+        <field name="name">لوحة مبيعات المناديب</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">graph,pivot,list,form</field>
+        <field name="domain">[('delegate_id', '!=', False)]</field>
+        <field name="context">{}</field>
+        <field name="view_ids" eval="[(5, 0, 0), 
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('view_sale_order_graph_delegate')}), 
+            (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_sale_order_pivot_delegate')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                لا توجد طلبات مبيعات للمناديب بعد.
+            </p>
+            <p>
+                ستظهر هنا تحليلات وإحصائيات المبيعات لكل مندوب بمجرد مزامنة طلبات البيع من التطبيق.
+            </p>
+        </field>
+    </record>
+
+    <!-- Top-level Navigation Menu -->
+    <menuitem id="menu_delegate_tracking_root" 
+              name="coa delegate_tracking" 
+              web_icon="coa_delegate_tracking,static/description/icon.png"
+              sequence="20"/>
+
+    <!-- Submenu item for Manage Delegates (Now sequence=10, points to action_coa_delegate) -->
+    <menuitem id="menu_delegate_management" 
+              name="إدارة المناديب" 
+              parent="menu_delegate_tracking_root" 
+              action="action_coa_delegate" 
+              sequence="10"/>
+
+    <!-- Submenu item for Sales Dashboard (Now sequence=15) -->
+    <menuitem id="menu_delegate_sales_dashboard" 
+              name="لوحة مبيعات المناديب" 
+              parent="menu_delegate_tracking_root" 
+              action="action_delegate_sales_dashboard" 
+              sequence="15"/>
+
+    <!-- Submenu item for Map (Now sequence=20) -->
+    <menuitem id="menu_delegate_live_map" 
+              name="خريطة التتبع المباشر" 
+              parent="menu_delegate_tracking_root" 
+              action="action_delegate_live_map" 
+              sequence="20"/>
+
+    <!-- Submenu item for Logs (Now sequence=25) -->
+    <menuitem id="menu_delegate_location_logs" 
+              name="سجلات حركة المندوب" 
+              parent="menu_delegate_tracking_root" 
+              action="action_delegate_location_log" 
+              sequence="25"/>
+</odoo>

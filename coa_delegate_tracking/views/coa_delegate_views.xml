@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_coa_delegate_tree" model="ir.ui.view">
+        <field name="name">coa.delegate.tree</field>
+        <field name="model">coa.delegate</field>
+        <field name="arch" type="xml">
+            <list string="Sales Delegates">
+                <field name="name"/>
+                <field name="username"/>
+                <field name="is_active"/>
+                <field name="last_seen"/>
+                <field name="last_latitude"/>
+                <field name="last_longitude"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_coa_delegate_form" model="ir.ui.view">
+        <field name="name">coa.delegate.form</field>
+        <field name="model">coa.delegate</field>
+        <field name="arch" type="xml">
+            <form string="Sales Delegate">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Ahmed Ali"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Login Credentials">
+                            <field name="username"/>
+                            <field name="password" password="True"/>
+                            <field name="is_active"/>
+                        </group>
+                        <group string="Last Known Status">
+                            <field name="last_seen" readonly="1"/>
+                            <field name="last_latitude" readonly="1"/>
+                            <field name="last_longitude" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_coa_delegate_search" model="ir.ui.view">
+        <field name="name">coa.delegate.search</field>
+        <field name="model">coa.delegate</field>
+        <field name="arch" type="xml">
+            <search string="Search Delegates">
+                <field name="name" filter_domain="['|', ('name', 'ilike', self), ('username', 'ilike', self)]"/>
+                <field name="username"/>
+                <separator/>
+                <filter string="Active" name="active" domain="[('is_active', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('is_active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_coa_delegate" model="ir.actions.act_window">
+        <field name="name">Sales Delegates</field>
+        <field name="res_model">coa.delegate</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_coa_delegate_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first virtual sales delegate!
+            </p>
+            <p>
+                Manage logins and credentials for your field tracking application without buying extra Odoo licenses.
+            </p>
+        </field>
+    </record>
+</odoo>

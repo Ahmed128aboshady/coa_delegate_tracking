@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Route Plan - List View -->
+    <record id="view_delegate_route_plan_tree" model="ir.ui.view">
+        <field name="name">delegate.route.plan.tree</field>
+        <field name="model">delegate.route.plan</field>
+        <field name="arch" type="xml">
+            <list string="Route Plans">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="delegate_id"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Route Plan - Form View -->
+    <record id="view_delegate_route_plan_form" model="ir.ui.view">
+        <field name="name">delegate.route.plan.form</field>
+        <field name="model">delegate.route.plan</field>
+        <field name="arch" type="xml">
+            <form string="Route Plan">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="مثال: خطة خط السير اليومية"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="delegate_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="الزيارات المطلوبة (Visits)">
+                            <field name="visit_ids">
+                                <list editable="bottom">
+                                    <field name="partner_id"/>
+                                    <field name="state"/>
+                                    <field name="start_time" readonly="1"/>
+                                    <field name="end_time" readonly="1"/>
+                                    <field name="duration" readonly="1"/>
+                                    <field name="notes"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for Route Plan -->
+    <record id="action_delegate_route_plan" model="ir.actions.act_window">
+        <field name="name">خطط السير (Route Plans)</field>
+        <field name="res_model">delegate.route.plan</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                إنشاء خطة سير جديدة للمندوبين
+            </p>
+            <p>
+                قم بإنشاء خطط السير وتعيينها للمندوب وتحديد العملاء المطلوب زيارتهم وتاريخ اليوم.
+            </p>
+        </field>
+    </record>
+
+    <!-- Visit - List View -->
+    <record id="view_delegate_visit_tree" model="ir.ui.view">
+        <field name="name">delegate.visit.tree</field>
+        <field name="model">delegate.visit</field>
+        <field name="arch" type="xml">
+            <list string="Visits">
+                <field name="partner_id"/>
+                <field name="route_plan_id"/>
+                <field name="state"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+                <field name="duration"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Visit - Form View -->
+    <record id="view_delegate_visit_form" model="ir.ui.view">
+        <field name="name">delegate.visit.form</field>
+        <field name="model">delegate.visit</field>
+        <field name="arch" type="xml">
+            <form string="Visit">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,started,completed,cancelled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="route_plan_id"/>
+                            <field name="notes"/>
+                        </group>
+                        <group>
+                            <field name="start_time"/>
+                            <field name="end_time"/>
+                            <field name="duration"/>
+                        </group>
+                    </group>
+                    <group string="GPS Coordinates (موقع الزيارة)">
+                        <group>
+                            <field name="latitude_start"/>
+                            <field name="longitude_start"/>
+                        </group>
+                        <group>
+                            <field name="latitude_end"/>
+                            <field name="longitude_end"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for Visit -->
+    <record id="action_delegate_visit" model="ir.actions.act_window">
+        <field name="name">زيارات العملاء (Visits)</field>
+        <field name="res_model">delegate.visit</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menu Items under coa_delegate_tracking root menu -->
+    <!-- Menu item for Route Plans (sequence=11) -->
+    <menuitem id="menu_delegate_route_plans" 
+              name="خطط السير اليومية" 
+              parent="menu_delegate_tracking_root" 
+              action="action_delegate_route_plan" 
+              sequence="11"/>
+
+    <!-- Menu item for Visits (sequence=12) -->
+    <menuitem id="menu_delegate_visits" 
+              name="تقارير زيارات المندوبين" 
+              parent="menu_delegate_tracking_root" 
+              action="action_delegate_visit" 
+              sequence="12"/>
+</odoo>
