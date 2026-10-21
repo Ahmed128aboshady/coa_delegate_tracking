@@ -7,3 +7,6 @@ access_delegate_visit_user,delegate.visit.user,model_delegate_visit,base.group_u
 access_delegate_visit_admin,delegate.visit.admin,model_delegate_visit,base.group_system,1,1,1,1
 access_coa_delegate_user,coa.delegate.user,model_coa_delegate,base.group_user,1,1,1,0
 access_coa_delegate_admin,coa.delegate.admin,model_coa_delegate,base.group_system,1,1,1,1
+access_delegate_directive_user,delegate.directive.user,model_delegate_directive,base.group_user,1,1,1,0
+access_delegate_directive_admin,delegate.directive.admin,model_delegate_directive,base.group_system,1,1,1,1
+

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Stock Request - List View -->
+    <record id="view_coa_stock_request_tree" model="ir.ui.view">
+        <field name="name">coa.stock.request.list</field>
+        <field name="model">coa.stock.request</field>
+        <field name="arch" type="xml">
+            <list string="طلبات البضاعة والتحويلات">
+                <field name="name"/>
+                <field name="date_request"/>
+                <field name="delegate_id"/>
+                <field name="request_type"/>
+                <field name="source_location_id"/>
+                <field name="dest_location_id"/>
+                <field name="picking_id"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'submitted'" decoration-primary="state == 'approved'" decoration-success="state == 'done'" decoration-danger="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Stock Request - Form View -->
+    <record id="view_coa_stock_request_form" model="ir.ui.view">
+        <field name="name">coa.stock.request.form</field>
+        <field name="model">coa.stock.request</field>
+        <field name="arch" type="xml">
+            <form string="طلب بضاعة / إذن تحويل للسيارة">
+                <header>
+                    <button name="action_submit" string="إرسال الطلب" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_approve" string="موافقة وإنشاء إذن التحويل" type="object" class="btn-primary" invisible="state != 'submitted'"/>
+                    <button name="action_validate" string="تأكيد الصرف والتسليم" type="object" class="btn-success" invisible="state != 'approved'"/>
+                    <button name="action_cancel" string="إلغاء الطلب" type="object" invisible="state in ('done', 'cancelled')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="بيانات الطلب">
+                            <field name="delegate_id"/>
+                            <field name="request_type"/>
+                            <field name="source_warehouse_id" invisible="request_type != 'warehouse'" required="request_type == 'warehouse'"/>
+                            <field name="source_delegate_id" invisible="request_type != 'van'" required="request_type == 'van'"/>
+                            <field name="date_request"/>
+                        </group>
+                        <group string="المواقع المخزنية">
+                            <field name="source_location_id"/>
+                            <field name="dest_location_id"/>
+                            <field name="picking_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="المنتجات المطلوبة (Items)">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="qty_requested"/>
+                                    <field name="qty_delivered" readonly="1"/>
+                                    <field name="product_uom_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="ملاحظات">
+                            <field name="notes" placeholder="ملاحظات المندوب أو أمين المستودع..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Stock Request - Search View -->
+    <record id="view_coa_stock_request_search" model="ir.ui.view">
+        <field name="name">coa.stock.request.search</field>
+        <field name="model">coa.stock.request</field>
+        <field name="arch" type="xml">
+            <search string="بحث طلبات البضاعة">
+                <field name="name"/>
+                <field name="delegate_id"/>
+                <field name="source_location_id"/>
+                <field name="dest_location_id"/>
+                <separator/>
+                <filter string="قيد الانتظار" name="submitted" domain="[('state', '=', 'submitted')]"/>
+                <filter string="تمت الموافقة" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="تم الصرف" name="done" domain="[('state', '=', 'done')]"/>
+                <group expand="0" string="تجميع حسب">
+                    <filter string="المندوب" name="group_delegate" context="{'group_by': 'delegate_id'}"/>
+                    <filter string="الحالة" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="نوع الطلب" name="group_type" context="{'group_by': 'request_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_coa_stock_request" model="ir.actions.act_window">
+        <field name="name">طلبات بضاعة المناديب (Stock Requests)</field>
+        <field name="res_model">coa.stock.request</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_coa_stock_request_search"/>
+        <field name="context">{'search_default_submitted': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                لا توجد طلبات بضاعة حالية
+            </p>
+            <p>
+                يمكن للمناديب طلب تعبئة بضاعة لسياراتهم من المستودعات أو من سيارات زملائهم من خلال تطبيق المندوبين.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item under Delegate Operations -->
+    <menuitem id="menu_coa_stock_request"
+              name="طلبات البضاعة (Stock Requests)"
+              parent="menu_delegate_tracking_root"
+              action="action_coa_stock_request"
+              sequence="25"/>
+</odoo>

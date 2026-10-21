@@ -23,6 +23,7 @@ Perfect for field sales teams, delivery agents, and service technicians.
         'views/coa_delegate_views.xml',
         'views/delegate_location_views.xml',
         'views/delegate_visit_views.xml',
+        'views/delegate_directive_views.xml',
     ],
     'price': 49.00,
     'currency': 'USD',

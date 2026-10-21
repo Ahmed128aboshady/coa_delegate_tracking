@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_delegate" model="ir.ui.view">
+        <field name="name">res.config.settings.delegate</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority">30</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Sales Delegates" string="Sales Delegates (المناديب)" name="coa_delegate_tracking">
+                    <block title="General &amp; Payment Configuration (التحصيلات)" name="delegate_general_settings">
+                        <setting string="Default Payment Journal" help="The default cash or bank journal for delegate collections.">
+                            <field name="delegate_payment_journal_id"/>
+                        </setting>
+                        <setting string="Auto-Confirm Sales Orders" help="Automatically confirm sales orders submitted from the mobile app.">
+                            <field name="auto_confirm_delegate_orders"/>
+                        </setting>
+                    </block>
+                    <block title="Geofencing &amp; GPS Validation (النطاق الجغرافي)" name="delegate_geofencing_settings">
+                        <setting string="Enforce Geofencing Restriction" help="Require delegates to be physically near customer location when starting visits.">
+                            <field name="enforce_geofencing"/>
+                        </setting>
+                        <setting string="Allowed Radius (Meters)" help="Maximum allowed distance in meters from customer address." invisible="not enforce_geofencing">
+                            <field name="geofencing_radius_meters"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_delegate_config_settings" model="ir.actions.act_window">
+        <field name="name">إعدادات المناديب والتطبيق</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'module': 'coa_delegate_tracking', 'bin_size': False}</field>
+    </record>
+</odoo>

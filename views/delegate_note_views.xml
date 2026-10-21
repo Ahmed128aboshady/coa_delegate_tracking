@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Note - List View -->
+    <record id="view_delegate_note_tree" model="ir.ui.view">
+        <field name="name">delegate.note.list</field>
+        <field name="model">delegate.note</field>
+        <field name="arch" type="xml">
+            <list string="Delegate Notes">
+                <field name="date"/>
+                <field name="delegate_id"/>
+                <field name="partner_id"/>
+                <field name="note"/>
+                <field name="state" widget="badge" decoration-danger="state == 'new'" decoration-warning="state == 'in_progress'" decoration-success="state == 'resolved'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Note - Form View -->
+    <record id="view_delegate_note_form" model="ir.ui.view">
+        <field name="name">delegate.note.form</field>
+        <field name="model">delegate.note</field>
+        <field name="arch" type="xml">
+            <form string="Delegate Note">
+                <header>
+                    <button name="action_mark_in_progress" string="In Review / قيد المراجعة" type="object" class="btn-warning" invisible="state != 'new'"/>
+                    <button name="action_resolve" string="Mark Resolved / تم الحل" type="object" class="btn-success" invisible="state == 'resolved'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,in_progress,resolved"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="delegate_id"/>
+                            <field name="partner_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                        </group>
+                    </group>
+                    <group string="Delegate Note / نص الملاحظة أو الشكوى">
+                        <field name="note" placeholder="نص الملاحظة الواردة من المندوب..."/>
+                    </group>
+                    <group string="Management Response / رد الإدارة والتوجيهات">
+                        <field name="reply" placeholder="اكتب رد الإدارة أو التوجيهات للمندوب هنا..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Note - Search View -->
+    <record id="view_delegate_note_search" model="ir.ui.view">
+        <field name="name">delegate.note.search</field>
+        <field name="model">delegate.note</field>
+        <field name="arch" type="xml">
+            <search string="Search Notes">
+                <field name="delegate_id"/>
+                <field name="partner_id"/>
+                <field name="note"/>
+                <filter string="New / جديدة" name="filter_new" domain="[('state', '=', 'new')]"/>
+                <filter string="In Progress / قيد المراجعة" name="filter_in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Resolved / تم الحل" name="filter_resolved" domain="[('state', '=', 'resolved')]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action for Notes -->
+    <record id="action_delegate_note" model="ir.actions.act_window">
+        <field name="name">ملاحظات وشكاوى المناديب (Notes)</field>
+        <field name="res_model">delegate.note</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_delegate_note_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                لا توجد ملاحظات مرسلة من المناديب
+            </p>
+            <p>
+                تظهر هنا الملاحظات والشكاوى الإدارية الواردة مباشرة من تطبيق المندوب.
+            </p>
+        </field>
+    </record>
+</odoo>

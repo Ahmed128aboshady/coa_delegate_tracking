@@ -2,3 +2,4 @@
 from . import coa_delegate
 from . import delegate_location
 from . import delegate_visit
+from . import delegate_directive

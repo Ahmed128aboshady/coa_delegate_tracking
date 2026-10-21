@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Sale Order Form -->
+    <record id="view_order_form_inherit_delegate" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.delegate</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="delegate_id" options="{'no_create': True}"/>
+                <field name="visit_id" options="{'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Sale Order Tree / List (Main Orders) -->
+    <record id="view_order_tree_inherit_delegate" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit.delegate</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="delegate_id" optional="show" string="المندوب" widget="many2one_avatar_user"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Quotation Tree / List -->
+    <record id="view_quotation_tree_inherit_delegate" model="ir.ui.view">
+        <field name="name">sale.order.quotation.tree.inherit.delegate</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="delegate_id" optional="show" string="المندوب" widget="many2one_avatar_user"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Sale Order Search / Filters -->
+    <record id="view_sales_order_filter_inherit_delegate" model="ir.ui.view">
+        <field name="name">sale.order.list.select.inherit.delegate</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="delegate_id" string="المندوب"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter string="المندوب" name="group_by_delegate" context="{'group_by': 'delegate_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Payment Form -->
+    <record id="view_account_payment_form_inherit_delegate" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit.delegate</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="delegate_id" options="{'no_create': True}"/>
+                <field name="visit_id" options="{'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Invoice Form -->
+    <record id="view_move_form_inherit_delegate" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.delegate</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="delegate_id" options="{'no_create': True}"/>
+                <field name="visit_id" options="{'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Customer Invoices Tree / List -->
+    <record id="view_out_invoice_tree_inherit_delegate" model="ir.ui.view">
+        <field name="name">account.out.invoice.tree.inherit.delegate</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_out_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_user_id']" position="after">
+                <field name="delegate_id" optional="show" string="المندوب"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Invoices Search / Filters -->
+    <record id="view_account_invoice_filter_inherit_delegate" model="ir.ui.view">
+        <field name="name">account.invoice.select.inherit.delegate</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_user_id']" position="after">
+                <field name="delegate_id" string="المندوب"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter string="المندوب" name="group_by_delegate" context="{'group_by': 'delegate_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
