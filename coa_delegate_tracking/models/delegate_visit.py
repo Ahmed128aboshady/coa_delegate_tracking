@@ -34,22 +34,21 @@ class DelegateVisit(models.Model):
 
     partner_id = fields.Many2one('res.partner', string='Customer', required=True)
     route_plan_id = fields.Many2one('delegate.route.plan', string='Route Plan', ondelete='cascade', index=True)
-    delegate_id = fields.Many2one(
-        'coa.delegate',
-        string='Delegate',
-        compute='_compute_delegate_id',
-        store=True,
-        readonly=False,
-        precompute=True
-    )
+    delegate_id = fields.Many2one('coa.delegate', string='Delegate', index=True)
 
-    @api.depends('route_plan_id.delegate_id')
-    def _compute_delegate_id(self):
-        for rec in self:
-            if rec.route_plan_id and rec.route_plan_id.delegate_id:
-                rec.delegate_id = rec.route_plan_id.delegate_id
-            elif not rec.id:
-                rec.delegate_id = False
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('delegate_id') and vals.get('route_plan_id'):
+                plan = self.env['delegate.route.plan'].browse(vals['route_plan_id'])
+                if plan.delegate_id:
+                    vals['delegate_id'] = plan.delegate_id.id
+        return super(DelegateVisit, self).create(vals_list)
+
+    @api.onchange('route_plan_id')
+    def _onchange_route_plan_id(self):
+        if self.route_plan_id and self.route_plan_id.delegate_id:
+            self.delegate_id = self.route_plan_id.delegate_id
 
     state = fields.Selection([
         ('pending', 'Pending'),
@@ -96,11 +95,9 @@ class DelegateVisit(models.Model):
     transaction_count = fields.Integer(
         string='عدد المعاملات',
         compute='_compute_transaction_count',
-        store=False,
         help='إجمالي عدد المعاملات (أوامر بيع + سندات قبض + فواتير) المنفذة خلال هذه الزيارة'
     )
 
-    @api.depends('order_ids', 'payment_ids', 'invoice_ids')
     def _compute_transaction_count(self):
         for visit in self:
             cnt = len(visit.order_ids) + len(visit.payment_ids) + len(visit.invoice_ids)
