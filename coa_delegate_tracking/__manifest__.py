@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'COA Sales Delegate Live Tracking & Field Operations',
-    'version': '19.0.2.1.5',
+    'version': '19.0.2.1.6',
     'category': 'Sales',
     'summary': 'Live GPS location tracking, Route planning, Visits, Stock Requests, Expenses and Mobile integration for sales delegates',
     'description': """

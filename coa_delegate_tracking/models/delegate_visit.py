@@ -87,21 +87,16 @@ class DelegateVisit(models.Model):
         help='Calculated distance in meters between visit start location and customer coordinates'
     )
 
-    # Linked Transactions
-    order_ids = fields.One2many('sale.order', 'visit_id', string='Sales Orders')
-    payment_ids = fields.One2many('account.payment', 'visit_id', string='Payments')
-    invoice_ids = fields.One2many('account.move', 'visit_id', string='Invoices')
-
     transaction_count = fields.Integer(
         string='عدد المعاملات',
         compute='_compute_transaction_count',
-        help='إجمالي عدد المعاملات (أوامر بيع + سندات قبض + فواتير) المنفذة خلال هذه الزيارة'
+        help='إجمالي عدد المعاملات المنفذة خلال هذه الزيارة'
     )
 
     def _compute_transaction_count(self):
         for visit in self:
-            cnt = len(visit.order_ids) + len(visit.payment_ids) + len(visit.invoice_ids)
-            if cnt == 0 and visit.partner_id and visit.delegate_id and visit.start_time:
+            cnt = 0
+            if visit.partner_id and visit.delegate_id and visit.start_time:
                 try:
                     visit_dt = visit.start_time
                     if isinstance(visit_dt, str):
@@ -117,12 +112,10 @@ class DelegateVisit(models.Model):
                     ])
                     pay_cnt = self.env['account.payment'].search_count([
                         ('partner_id', '=', visit.partner_id.id),
-                        ('delegate_id', '=', visit.delegate_id.id),
                         ('date', '=', visit_date)
                     ])
                     inv_cnt = self.env['account.move'].search_count([
                         ('partner_id', '=', visit.partner_id.id),
-                        ('delegate_id', '=', visit.delegate_id.id),
                         ('invoice_date', '=', visit_date)
                     ])
                     cnt = so_cnt + pay_cnt + inv_cnt
