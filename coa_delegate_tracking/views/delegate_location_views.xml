@@ -189,6 +189,13 @@
               action="action_delegate_expense" 
               sequence="20"/>
 
+    <!-- Submenu: Stock Requests -->
+    <menuitem id="menu_coa_stock_request"
+              name="طلبات البضاعة (Stock Requests)"
+              parent="menu_delegate_tracking_root"
+              action="action_coa_stock_request"
+              sequence="22"/>
+
     <!-- Submenu: Notes -->
     <menuitem id="menu_delegate_notes" 
               name="الملاحظات والشكاوى" 

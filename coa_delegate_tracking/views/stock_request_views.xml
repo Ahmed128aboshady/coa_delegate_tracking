@@ -111,11 +111,4 @@
             </p>
         </field>
     </record>
-
-    <!-- Menu Item under Delegate Operations -->
-    <menuitem id="menu_coa_stock_request"
-              name="طلبات البضاعة (Stock Requests)"
-              parent="menu_delegate_tracking_root"
-              action="action_coa_stock_request"
-              sequence="25"/>
 </odoo>

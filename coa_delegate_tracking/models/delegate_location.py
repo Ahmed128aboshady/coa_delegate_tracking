@@ -59,7 +59,3 @@ class ProductProduct(models.Model):
                             record[key] = ""
         return results
 
-class SaleOrder(models.Model):
-    _inherit = 'sale.order'
-
-    delegate_id = fields.Many2one('coa.delegate', string='Sales Delegate')
