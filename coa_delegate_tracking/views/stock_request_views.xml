@@ -13,7 +13,7 @@
                 <field name="source_location_id"/>
                 <field name="dest_location_id"/>
                 <field name="picking_id"/>
-                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'submitted'" decoration-primary="state == 'approved'" decoration-success="state == 'done'" decoration-danger="state == 'cancelled'"/>
+                <field name="state" widget="badge" decoration-info="state in ('draft', 'approved')" decoration-warning="state == 'submitted'" decoration-success="state == 'done'" decoration-danger="state == 'cancelled'"/>
             </list>
         </field>
     </record>

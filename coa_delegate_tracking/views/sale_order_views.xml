@@ -20,7 +20,7 @@
         <field name="inherit_id" ref="sale.sale_order_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='user_id']" position="after">
-                <field name="delegate_id" optional="show" string="المندوب" widget="many2one_avatar_user"/>
+                <field name="delegate_id" optional="show" string="المندوب"/>
             </xpath>
         </field>
     </record>
