@@ -86,7 +86,7 @@
                 <filter string="قيد الانتظار" name="submitted" domain="[('state', '=', 'submitted')]"/>
                 <filter string="تمت الموافقة" name="approved" domain="[('state', '=', 'approved')]"/>
                 <filter string="تم الصرف" name="done" domain="[('state', '=', 'done')]"/>
-                <group string="تجميع حسب">
+                <group name="group_by">
                     <filter string="المندوب" name="group_delegate" context="{'group_by': 'delegate_id'}"/>
                     <filter string="الحالة" name="group_state" context="{'group_by': 'state'}"/>
                     <filter string="نوع الطلب" name="group_type" context="{'group_by': 'request_type'}"/>
