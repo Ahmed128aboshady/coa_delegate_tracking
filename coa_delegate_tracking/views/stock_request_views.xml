@@ -13,7 +13,7 @@
                 <field name="source_location_id"/>
                 <field name="dest_location_id"/>
                 <field name="picking_id"/>
-                <field name="state" widget="badge" decoration-info="state in ('draft', 'approved')" decoration-warning="state == 'submitted'" decoration-success="state == 'done'" decoration-danger="state == 'cancelled'"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft' or state == 'approved'" decoration-warning="state == 'submitted'" decoration-success="state == 'done'" decoration-danger="state == 'cancelled'"/>
             </list>
         </field>
     </record>
@@ -28,7 +28,7 @@
                     <button name="action_submit" string="إرسال الطلب" type="object" class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_approve" string="موافقة وإنشاء إذن التحويل" type="object" class="btn-primary" invisible="state != 'submitted'"/>
                     <button name="action_validate" string="تأكيد الصرف والتسليم" type="object" class="btn-success" invisible="state != 'approved'"/>
-                    <button name="action_cancel" string="إلغاء الطلب" type="object" invisible="state in ('done', 'cancelled')"/>
+                    <button name="action_cancel" string="إلغاء الطلب" type="object" invisible="state == 'done' or state == 'cancelled'"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,done"/>
                 </header>
                 <sheet>
