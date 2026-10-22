@@ -2,15 +2,15 @@
 <odoo>
     <!-- Directive - List View -->
     <record id="view_delegate_directive_tree" model="ir.ui.view">
-        <field name="name">delegate.directive.tree</field>
+        <field name="name">delegate.directive.list</field>
         <field name="model">delegate.directive</field>
         <field name="arch" type="xml">
             <list string="التوجيهات والتعليمات الإدارية">
+                <field name="date"/>
                 <field name="name"/>
                 <field name="directive_type"/>
                 <field name="target_type"/>
-                <field name="is_active"/>
-                <field name="create_date" string="تاريخ الإنشاء"/>
+                <field name="is_active" widget="boolean_toggle"/>
             </list>
         </field>
     </record>
@@ -30,11 +30,12 @@
                     </div>
                     <group>
                         <group string="إعدادات ونوع التوجيه">
-                            <field name="directive_type" widget="radio"/>
+                            <field name="directive_type"/>
+                            <field name="date"/>
                             <field name="is_active"/>
                         </group>
                         <group string="نطاق الاستهداف">
-                            <field name="target_type" widget="radio"/>
+                            <field name="target_type"/>
                             <field name="delegate_ids" widget="many2many_tags" 
                                    invisible="target_type != 'specific'"
                                    placeholder="اختر المناديب المستهدفين بهذا التوجيه فقط..."/>
@@ -48,17 +49,15 @@
                             <field name="date_end"/>
                         </group>
                     </group>
-                    <notebook>
-                        <page string="نص التوجيه والتعليمات للمندوب">
-                            <field name="body" placeholder="اكتب التعليمات التي ستظهر للمندوب داخل تطبيق الموبايل..."/>
-                        </page>
-                    </notebook>
+                    <group string="نص التوجيه والتعليمات للمندوب">
+                        <field name="body" placeholder="اكتب التعليمات التي ستظهر للمندوب داخل تطبيق الموبايل..."/>
+                    </group>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <!-- Directive - Search View -->
+    <!-- Directive - Search View (RelaxNG Compliant for Odoo 19) -->
     <record id="view_delegate_directive_search" model="ir.ui.view">
         <field name="name">delegate.directive.search</field>
         <field name="model">delegate.directive</field>
@@ -66,11 +65,10 @@
             <search string="بحث التوجيهات">
                 <field name="name"/>
                 <field name="body"/>
-                <separator/>
                 <filter string="نشط" name="active" domain="[('is_active', '=', True)]"/>
                 <filter string="عاجل" name="urgent" domain="[('directive_type', '=', 'urgent')]"/>
                 <filter string="أهداف بيعية" name="target" domain="[('directive_type', '=', 'target')]"/>
-                <group expand="0" string="تجميع حسب">
+                <group name="group_by">
                     <filter string="نوع التوجيه" name="group_by_type" context="{'group_by': 'directive_type'}"/>
                     <filter string="المستهدفون" name="group_by_target" context="{'group_by': 'target_type'}"/>
                 </group>
@@ -93,11 +91,4 @@
             </p>
         </field>
     </record>
-
-    <!-- Submenu Item under Root Menu (Sequence=13) -->
-    <menuitem id="menu_delegate_directive"
-              name="التوجيهات والإشعارات الإدارية"
-              parent="menu_delegate_tracking_root"
-              action="action_delegate_directive"
-              sequence="13"/>
 </odoo>

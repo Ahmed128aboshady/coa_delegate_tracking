@@ -10,14 +10,18 @@ class CoaDelegate(models.Model):
     username = fields.Char(string='Username', required=True, index=True)
     password = fields.Char(string='Password', required=True)
     is_active = fields.Boolean(string='Active', default=True, index=True)
+    phone = fields.Char(string='Phone / Mobile')
+    user_id = fields.Many2one('res.users', string='Related Odoo User')
+    van_warehouse_id = fields.Many2one('stock.warehouse', string='Van / Mobile Warehouse')
     
     last_latitude = fields.Float(string='Last Latitude', digits=(10, 7))
     last_longitude = fields.Float(string='Last Longitude', digits=(10, 7))
     last_seen = fields.Datetime(string='Last Seen')
 
-    _sql_constraints = [
-        ('username_uniq', 'unique(username)', 'The username must be unique!')
-    ]
+    _unique_username = models.Constraint(
+        'UNIQUE(username)',
+        'The username must be unique!'
+    )
 
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None, **read_kwargs):

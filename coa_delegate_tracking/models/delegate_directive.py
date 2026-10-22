@@ -4,10 +4,11 @@ from odoo import models, fields, api
 class DelegateDirective(models.Model):
     _name = 'delegate.directive'
     _description = 'Delegate Directive / التوجيهات والتعليمات الإدارية للمناديب'
-    _order = 'create_date desc, id desc'
+    _order = 'date desc, id desc'
 
     name = fields.Char(string='عنوان التوجيه', required=True)
     body = fields.Text(string='نص التوجيه والتعليمات', required=True)
+    date = fields.Datetime(string='تاريخ التوجيه', default=fields.Datetime.now)
     
     directive_type = fields.Selection([
         ('urgent', 'عاجل جداً (شريط رئيسي للتنبيه)'),

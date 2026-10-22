@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 
 class DelegateMapController(http.Controller):
 
-    @http.route('/delegates/upload_gps', type='json', auth='none', csrf=False, methods=['POST'])
+    @http.route('/delegates/upload_gps', type='jsonrpc', auth='none', csrf=False, methods=['POST'])
     def upload_gps_locations(self, **kwargs):
         """
         Custom JSON endpoint for delegate GPS upload.
